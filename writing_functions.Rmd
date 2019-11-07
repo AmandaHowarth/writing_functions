@@ -109,4 +109,51 @@ testing above function
 mean_and_sd(input_x = y)
 
 ```
+## Multiple inputs
+data set that has x and y's and x related to y through what looks like a linear regression
+lm = linear function in R 
+```{r}
+sim_data = tibble(
+  x = rnorm(30, mean = 1, sd = 1),
+  y = 2 + 3 * x + rnorm(30, 0, 1)
+)
+
+#shows plot if u run this whole code in the console 
+sim_data %>% 
+  ggplot(aes(x = x, y = y)) +
+  geom_point()
+
+ls_fit = lm(y ~ x, data = sim_data)
+
+#this will give u the estimated intercept (below)  
+beta0_hat = coef(ls_fit)[1]
+
+# this will give u the estimated slope
+beta1_hat = coef(ls_fit)[2]
+
+```
+i want to repeat the above process to simulate regression 
+```{r}
+sim_regression = function(n) {
+  
+  sim_data = tibble(
+    x = rnorm(n, mean = 1, sd = 1), 
+    y = 2 + 3*x + rnorm(n, 0, 1)
+  )
+
+ls_fit = lm(y ~ x, data = sim_data)
+
+tibble(
+  beta0_hat = coef(ls_fit)[1],
+  beta1_hat = coef(ls_fit)[2])
+}
+
+```
+
+```{r}
+sim_regression(n = 30)
+```
+
+
+
 
