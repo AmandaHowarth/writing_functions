@@ -8,3 +8,105 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r}
+library(tidyverse)
+library(rvest)
+
+#code below just makes nice figures# 
+knitr::opts_chunk$set(
+    echo = TRUE, 
+    warning = FALSE,
+    fig.width = 8,
+    fig.height = 6, 
+    out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.color = "viridis", 
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+Writing functions!
+
+Here's z scores 
+```{r}
+x = rnorm(n = 30, mean = 4, sd = 2.3)
+
+x_again = rnorm(n = 30, mean =6, sd = 0.3)
+
+y = rnorm(n = 30, mean = 4, sd = 2.3)
+
+
+(x - mean(x)) / sd(x)
+(x_again - mean(x_again)) / sd(x_again)
+
+# we would like to automate this process with functions so u don't have to keep writing over and over 
+
+
+```
+Now here's a fucntion - u named it as an object (z_score)
+updated to add conditional statment - if X is not numeric (Character, etc.) and if 
+it is wrong it will output X should be numeric 
+```{r}
+z_score = function(x) {
+  
+  if(!is.numeric(x)) {
+    stop("X should be numeric")
+  } else if (length(x<3)) {
+    stop("x should be longer than 3")
+  }
+  
+  (x - mean(x)) / sd(x)
+  
+  
+}
+```
+Try out the function 
+you are making x as x_again this time and it ouputs (x - mean(x)) / sd(x) of x_again
+using error = True lets u knit even with errors 
+```{r, error = TRUE}
+z_score(x = x_again)
+
+```
+Examples of how the conditional statement works 
+```{r, error = TRUE}
+z_score(x= 3) 
+# NA
+z_score(x= "my name is jeff")
+```
+
+## multiple outputs
+here u want the mean & standard deviation of the x factor 
+put it in a tibble to make a dataframe 
+```{r}
+mean_and_sd = function(input_x) {
+  
+  if(!is.numeric(input_x)) {
+    stop("X should be numeric")
+  } else if (length(input_x<3)) {
+    stop("x should be longer than 3")
+  }
+  tibble(
+  mean_input = mean(input_x),
+  sd_input = sd(input_x)
+  )
+    
+}
+
+#produces mean and standard deviation in a dataframe for whatever input the user out in
+# could use a list instead (lists allow u to combine things and output many things)
+
+```
+testing above function 
+```{r, error = TRUE}
+mean_and_sd(input_x = y)
+
+```
+
